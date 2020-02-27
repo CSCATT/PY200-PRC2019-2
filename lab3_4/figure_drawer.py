@@ -55,7 +55,16 @@ if __name__ == '__main__':
 
 	# Создайте список фигур
 	figures = [Rectangle(20, 30, 400, 200),
-			   Ellipse(440, 30, 400, 200)] #margin_left, margin_top, Wigth, left
+			   Ellipse(440, 30, 400, 200),
+			   CloseFigure({'x': 200, 'y': 500},
+						   {'x': 300, 'y': 600},
+						   {'x': 250, 'y': 650},
+						   {'x': 100, 'y': 700},
+						   {'x': 100, 'y': 600})] #margin_left, margin_top, Wigth, left
+
+	#print(f"Периметр прямоугольника 1: {rect_1.perimeter()}, Площадь: {rect_1.square()}")
+	#print(f"Периметр прямоугольника 2: {rect_2.perimeter()}, Площадь: {rect_2.square()}")
+	#print(f"Периметр эллипса: {ell.perimeter()}, Площадь: {ell.square()}")
 
 	#figures = []
 	figure_widget.set_figures(figures)

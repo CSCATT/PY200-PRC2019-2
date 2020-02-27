@@ -113,6 +113,9 @@ class Ellipse (Figure):
 
 
 class CloseFigure(Figure):
-	def __init__(self, *args):
-		self.d = [{"x": x0, "y": y0},
-				  {"x": x1, "y": y1}]
+	def __init__ (self, *args):
+		super().__init__(args[0]['x'], args[0]['y'])
+		self._args = args
+
+	def __iter__ (self):
+		return iter(self._args)
