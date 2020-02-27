@@ -42,7 +42,13 @@ class Glass:
 #    Убедитесь, что у других объектов Glass атрибуты экземпляра класса не изменились.
 print("ЗАДАНИЕ 2")
 # TODO glass_2_1, glass_2_2, glass_2_3 GlassDefaultArg (200, 100)
-glass_2_1 = Glass(100, 100)
+g2_1 = Glass(200, 12)
+print(f"Glass Volume 1: {g2_1.capacity_volume}, Volume water in Glass 1: {g2_1.occupied_volume}")
+
+g2_2 = Glass(100, 0)
+print(f"Volume of Glass 2: {g2_2.capacity_volume}, Volume water in Glass 2: {g2_2.occupied_volume}")
+print("EXERCISES DONE", "\n")
+
 
 # 3. Создайте класс GlassDefaultArg (нужен только __init__) c аргументом occupied_volume
 #    По умолчанию occupied_volume равен нулю. Создайте два объекта с 0 и 200
@@ -66,8 +72,15 @@ class GlassDefaultArg:
             raise TypeError
 
 
-glass_3_1 = GlassDefaultArg(200)
-glass_3_2 = GlassDefaultArg(200, 100)
+#glass_3_1 = GlassDefaultArg(200)
+#glass_3_2 = GlassDefaultArg(200, 100)
+
+g3_1 = GlassDefaultArg(200)
+print(f"Volume of Glass 1: {g3_1.capacity_volume}, Volume coffe in Glass 1: {g3_1.occupied_volume}")
+
+g3_2 = GlassDefaultArg(200, 200)
+print(f"Volume of Glass 2: {g3_1.capacity_volume}, Volume coffe in Glass 2: {g3_1.occupied_volume}")
+print("EXERCISES DONE", "\n")
 
 
 # 4. Создайте класс GlassDefaultListArg (нужен только __init__)
@@ -86,6 +99,7 @@ class GlassDefaultListArg:
 
 
 print("ЗАДАНИЕ 4")
+print("version 1")
 glass_4_1 = GlassDefaultListArg(100)
 print("glass_4_1.occupied_volume: --->", glass_4_1.occupied_volume)
 
@@ -93,7 +107,29 @@ glass_4_2 = GlassDefaultListArg(200)
 print("glass_4_1.occupied_volume: --->", glass_4_2.occupied_volume)
 
 glass_4_2 = GlassDefaultListArg(300)
-print("glass_4_1.occupied_volume: --->", glass_4_2.occupied_volume, "\n")
+print("glass_4_1.occupied_volume: --->", glass_4_2.occupied_volume)
+print("V1 EXERCISES DONE", "\n")
+
+class GlassDefaultListArgV2:
+    def __init__(self, capacity_volume, occupied_volume=[]):
+        self.capacity_volume = capacity_volume
+        self.occupied_volume = occupied_volume
+        #self.occupied_volume.append(2)
+
+
+hashtagOne = "# нельзя использовать для аргументов по умолчанию изменяемые типы"
+hashtagTwo = "# при запуске возникает ошибка AttributeError"
+print("\n", "version 2", "\n", hashtagOne, "\n", hashtagTwo )
+
+glass_4_1v2 = GlassDefaultListArgV2(200)
+print(f"Volume of Glass 1: {glass_4_1v2.capacity_volume}, Volume coffe in Glass 1: {glass_4_1v2.occupied_volume}")
+glass_4_2v2 = GlassDefaultListArgV2(200, 50)
+print(f"Volume of Glass 2: {glass_4_2v2.capacity_volume}, Volume coffe in Glass 2: {glass_4_2v2.occupied_volume}")
+glass_4_3v2 = GlassDefaultListArgV2(200, 150)
+print(f"Volume of Glass 3: {glass_4_3v2.capacity_volume}, Volume coffe in Glass 3: {glass_4_3v2.occupied_volume}")
+print("V2 EXERCISES DONE", "\n")
+# нельзя использовать для аргументов по умолчанию изменяемые типы
+# при запуске возникает ошибка AttributeError
 
 
 # 5. Создайте класс GlassAddRemove, добавьте методы add_water, remove_water
@@ -101,40 +137,68 @@ print("glass_4_1.occupied_volume: --->", glass_4_2.occupied_volume, "\n")
 #    Вызовите методы add_water и remove.
 #    Убедитесь, что методы правильно изменяют атрибут occupied_volume.
 class GlassAddRemove:
-    def __init__(self, capacity_volume, occupied_volume=0):
-        if isinstance(capacity_volume, (int, float)):
-            if capacity_volume > 0:
-                self.capacity_volume = capacity_volume
-            else:
-                raise ValueError
-        else:
+    def __init__(self, capacity_volume, occupied_volume):
+        if not isinstance(capacity_volume, (int, float)):
             raise TypeError
-        if isinstance(capacity_volume, (int, float)):
-            if occupied_volume >= 0:
-                self.occupied_volume = occupied_volume
-            else:
-                raise ValueError
+        elif capacity_volume <= 0:
+            raise ValueError
         else:
+            self.capacity_volume = capacity_volume
+
+        if not isinstance(occupied_volume, (int, float)):
+            raise TypeError
+        elif occupied_volume < 0:
+            raise ValueError
+        elif occupied_volume > capacity_volume:
+            raise ValueError
+        else:
+            self.occupied_volume = occupied_volume
+
+        self.ostatok = None
+
+
+    def add_water(self, adding_water):
+        if not isinstance(adding_water, (int, float)):
             raise TypeError
 
-        # TODO check
+        space = self.capacity_volume - self.occupied_volume
+        if space < adding_water:
+            self.occupied_volume += space
+            self.ostatok = adding_water - space
+            return self.ostatok
+        else:
+            self.occupied_volume += adding_water
 
-    def add_water(self, add_w):
-        space = self.capacity_volume = self.occupied_volume
-        if self.occupied_volume < space:
-            left = self.add_w - (space - self.occupied_volume)
+    def remove_water(self, remove_water):
+        if not isinstance(remove_water, (int, float)):
+            raise TypeError
 
-        self.occupied_volume += add_w
+        if remove_water >= self.occupied_volume:
+            self.occupied_volume = 0
+        else:
+            self.occupied_volume -= remove_water
 
-    def remove_water(self):
-        print()
 
-
-# TODO THAT
 print("ЗАДАНИЕ 5")
 glass_5_1 = GlassAddRemove(200, 100)
 glass_5_1.add_water(100)
-glass_5_1.remove_water()
+
+print(glass_5_1, "\n")
+
+# проверка добавления/удаления воды
+stakan = GlassAddRemove(200, 50)
+print(f"Volume of glass: {stakan.capacity_volume}, Volume coffe in glass: {stakan.occupied_volume}")
+
+stakan.add_water(200)  # добавление воды в стакан
+print(f"Volume coffe in glass after adding: {stakan.occupied_volume}")
+print(f"Остаток воды на счёте: {stakan.ostatok}")
+
+stakan.remove_water(50)  # удаление воды из стакана
+print(f"Volume coffe in glass after removing: {stakan.occupied_volume}")
+
+stakan.remove_water(200)
+print(f"Volume coffe in glass after rm again: {stakan.occupied_volume}")
+print("EXERCISES DONE", "\n")
 
 # 6. Создайте три объекта типа GlassAddRemove,
 #    вызовите функцию dir для трёх объектов и для класса GlassAddRemove.
@@ -151,7 +215,11 @@ print("type(glass_6_3): --->", type(glass_6_3), "\n")
 
 print("type(GlassAddRemove): --->", type(GlassAddRemove), "\n")
 
-print("DIR: --->", dir(glass_6_1), "\n")
+print("DIR: --->", dir(glass_6_1))
+print("EXERCISES DONE", "\n")
+
+
+
 
 # ---------------------------------------------------------------------------------------------
 # Внутренние объекты класса (стр. 25-33)
@@ -165,15 +233,20 @@ print("ЗАДАНИЕ 7")
 
 
 class GlassDir:
-    def __init__(self, capacity_volume, occupied_volume):
-        self.capacity_volume = capacity_volume
+    def __init__ (self, v, s):
         print(dir(self))
         print(self.__dict__)
 
-        self.coccupide_volume = occupied_volume
-        print(dir(self))
+        self.v = v
+        # print(dir(self))
         print(self.__dict__)
 
+        self.s = s
+        # print(dir(self))
+        print(self.__dict__)
+
+a = GlassDir(1, 15)
+print("EXERCISES DONE", "\n")
 
 # 8. Создайте три объекта Glass. (стр. 27)
 #    Получите id для каждого объекта с соответсвующим id переменной self.
@@ -220,6 +293,9 @@ print("A(30): -------->", A(30), "\n")
 #
 print("ЗАДАНИЕ 11")
 # TODO check link: http://py-algorithm.blogspot.com/2011/08/blog-post.html  for help
+# please check file exercise11
+
+
 
 class Node:
     def __init__(self, prev=None, next_=None):
