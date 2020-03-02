@@ -16,13 +16,14 @@ class Library (object):
 
 	def __init__(self, book_name, year, author, action_flag):
 		"""Constructor"""
+
 		pass
 
-class LibJSON():
-	...
+	def LibJSON(self):
+		...
 
-class SQLLite():
-	...
+	def SQLLite(self):
+		...
 
 
 if __name__ == "__main__":

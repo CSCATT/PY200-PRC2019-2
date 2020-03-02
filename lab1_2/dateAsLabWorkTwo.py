@@ -16,6 +16,12 @@ class Date:
     def __repr__(self):
         return f'Date({self.year}, {self.month!r}, {self.day!r})'
 
+#TODO Date + int or date1 < date2
+#Если у нас определен только знак меньше
+#date1 < date2
+#date1 > date2
+
+
     @staticmethod
     def is_leap_year(year):
         """
@@ -94,6 +100,11 @@ class Date:
     def date(self):
         return self.__str__
 
+#TODO setter for check
+    @date.setter
+    def date (self, value):
+        self.__year, self.__month, self.__day = self.__is_valid_date(*value)
+
     @date.setter
     def date(self, value):
         print("Хочу, чтобы была дата:")
@@ -101,6 +112,8 @@ class Date:
         self.__day = int(value[0])
         self.__month = int(value[1])
         self.__year = int(value[2])
+
+#TODO 3 setter with cheking day month year (maybe done)
 
     @property
     def day(self):
@@ -113,6 +126,18 @@ class Date:
     @property
     def year(self):
         return self.__year
+
+    @day.setter
+    def day(self, value):
+        self.__day = self.__is_valid_date(*value)
+
+    @month.setter
+    def month (self, value):
+        self.__month = self.__is_valid_date(*value)
+
+    @year.setter
+    def year (self, value):
+        self.__year = self.__is_valid_date(*value)
 
     def add_day(self, day):
         """
@@ -221,6 +246,7 @@ class Date:
             m = 12 + m
 
         return f"От {d2}.{m2}.{y2} до {d1}.{m1}.{y1} {d} дней, {m} месяцев, {y} лет."
+
 
 
 if __name__ == "__main__":

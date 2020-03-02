@@ -1,8 +1,6 @@
-
-#Слушатель (ФИО): TILLOEV TILLO ABDULLOEVICH
-
 # реализация циклического двусвязного списка с использование слабых ссылок
 import weakref
+from lab4 import driver as drivers
 
 class DLL:
     class Node:
@@ -28,7 +26,8 @@ class DLL:
                 self.data = data
                 self.sled = sled
 
-#TODO setter for prev and forword
+        def __str__(self):
+            return self.data
 
     def __init__(self):
         """
@@ -38,12 +37,17 @@ class DLL:
         self.tail = None
         self.__lenght = 0
 
+        self.__structure_driver = None
+
     def __str__(self):
         """
         Метод, доступный через print(), выводит в консоль получившийся список,
         от начала self.head к концу self.tail
         :return: str
         """
+        if self.__lenght == 0:
+            return f"[]"
+
         usel = self.head
         spisok = str()
         i = 0
@@ -137,8 +141,6 @@ class DLL:
             current_node.sled = None
             self.tail.sled = self.head
             self.head.pred = weakref.ref(self.tail)
-
-#TODO solve self.head.pred = (self.tail) работа через сеттер
 
         elif 1 <= indx <= self.__lenght-1:
             current_node = self.head.sled
@@ -262,29 +264,62 @@ class DLL:
         """
         Очистка списка.
         """
-        self.head = None
-        self.tail = None
-        self.lenght = 0
+        usel = self.head.pred
+        i = 0
+        while i < self.__lenght:
+            del usel().sled
+            usel = usel().pred
+            i += 1
+        self.__lenght = 0
+
+    def to_dict(self):
+        current_node = self.head
+        d = {}
+        i = 0
+        while i < self.__lenght:
+            d[i] = current_node.data
+            i += 1
+            current_node = current_node.sled
+        return d
+
+    def from_dict(self, d={0: "Python", 1: "good"}):
+        for index, value in d.items():
+            self.insert_node(value, index)
+        print(self.to_dict())
+
+    def set_structure_driver(self, driver):
+        self.__structure_driver = driver
+
+    def load(self):
+        self.from_dict(self.__structure_driver.read())
+
+    def save(self):
+        self.__structure_driver.write(self.to_dict())
 
 
 if __name__ == "__main__":
     dlist = DLL()
-    dlist.add_node(2)
-    dlist.add_node(5)
-    dlist.add_node(3)
-    dlist.add_node(1)
-    dlist.add_node(4)
-    dlist.add_node(8)
+    dlist.add_node("hello")
+    dlist.add_node("hey")
+    dlist.add_node("hi")
+    dlist.add_node("ciao")
+    dlist.add_node("buonjiorno")
+    dlist.add_node("salut")
+    # print(dlist, dlist.str_lenght)
+    # print(dlist.search_node(9))
+    dlist.left_add_node("bounjour")
+    dlist.left_add_node("gutentag")
+    # print(dlist, dlist.str_lenght)
+    # print(dlist.str_back())
+    # dlist.remove_node(5)
+    # print(dlist, dlist.str_lenght)
+    # dlist.delete_node(1)
+    # print(dlist, dlist.str_lenght)
+    # dlist.insert_node(3, 4)
     print(dlist, dlist.str_lenght)
-    print(dlist.search_node(9))
-    dlist.left_add_node(3)
-    dlist.left_add_node(1)
+    # print(dlist.to_dict())
+    # dlist.from_dict()
+    # dlist.set_structure_driver(drivers.JSONFileDriver("test.json"))
+    # dlist.save()
+    dlist.clear()
     print(dlist, dlist.str_lenght)
-    print(dlist.str_back())
-    dlist.remove_node(5)
-    print(dlist, dlist.str_lenght)
-    dlist.delete_node(1)
-    print(dlist, dlist.str_lenght)
-    dlist.insert_node(3, 4)
-    print(dlist, dlist.str_lenght)
-    dlist.ssilki()
